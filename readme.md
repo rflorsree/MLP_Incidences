@@ -2,7 +2,7 @@
 
 Este proyecto utiliza una red neuronal MLP (Multilayer Perceptron) para predecir información relacionada con incidencias en la red elecrtica con una fecha y causa futura.
 
-## 📊 Estructura del Proyecto
+## Estructura del Proyecto
 ```
 MLP_Prediccion_Incidencias/
 |
@@ -24,7 +24,7 @@ MLP_Prediccion_Incidencias/
 
 ---
 
-## 🚀 Entrenamiento del Modelo
+## Entrenamiento del Modelo
 
 El archivo `scripts/train_mlp.py` entrena una red MLP con los siguientes datos:
 - **Input**: Fecha  y causa 
@@ -34,7 +34,7 @@ El archivo `scripts/train_mlp.py` entrena una red MLP con los siguientes datos:
   - Tiempo promedio muerto (min)
   - Tiempo promedio de resolución (min)
 
-### Ejecución:
+### Ejecucionn:
 ```bash
 cd scripts
 python train_mlp.py
@@ -43,7 +43,7 @@ El modelo y los preprocesadores se guardarán en la carpeta `../models/`.
 
 ---
 
-## 🤖 Predicción
+## Predict
 
 El archivo `scripts/predict.py` permite hacer una predicción ingresando:
 - Fecha futura (YYYY-MM-DD)
