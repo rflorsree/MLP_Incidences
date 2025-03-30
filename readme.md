@@ -1,26 +1,25 @@
 # Proyecto: Predicción de Incidencias con MLP
 
-Este proyecto utiliza una red neuronal MLP (Multilayer Perceptron) para predecir información relacionada con incidencias técnicas, basada en la fecha futura y la causa de la incidencia.
+Este proyecto utiliza una red neuronal MLP (Multilayer Perceptron) para predecir información relacionada con incidencias en la red elecrtica con una fecha y causa futura.
 
 ## 📊 Estructura del Proyecto
 ```
 MLP_Prediccion_Incidencias/
 |
-├── data/              # Datos originales (Excel)
+├── data/              
 │   └── EXCELINCIDENCIAS.xlsx
 |
-├── scripts/           # Códigos de entrenamiento y predicción
+├── scripts/           # scripts de entrenamiento y prediccion
 │   ├── train_mlp.py
 │   └── predict.py
 |
-├── models/            # Modelo entrenado y transformadores
-│   ├── mlp_model/     # Modelo de TensorFlow
+├── models/            # Modelo 
+│   ├── mlp_model/     
 │   ├── encoder_causa.pkl
 │   └── scaler_y.pkl
 |
-├── outputs/           # Resultados, gráficas o logs (opcional)
-|
-└── notebooks/         # Jupyter notebooks de exploración (opcional)
+└── outputs/           # Resultados de los modelos
+
 ```
 
 ---
@@ -28,7 +27,7 @@ MLP_Prediccion_Incidencias/
 ## 🚀 Entrenamiento del Modelo
 
 El archivo `scripts/train_mlp.py` entrena una red MLP con los siguientes datos:
-- **Input**: día de la semana (de la fecha), y causa (codificada)
+- **Input**: Fecha  y causa 
 - **Output**:
   - Número de incidencias
   - Número de clientes afectados
@@ -57,12 +56,3 @@ python predict.py
 ```
 Los resultados se mostrarán en consola.
 
----
-
-## 📁 Requisitos
-
-Instala las dependencias necesarias:
-
-```bash
-pip install tensorflow pandas numpy scikit-learn openpyxl joblib
-```
