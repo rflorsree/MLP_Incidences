@@ -1,4 +1,4 @@
-# scripts/train_mlp.py
+
 import pandas as pd
 import numpy as np
 import tensorflow as tf
@@ -9,10 +9,10 @@ import joblib
 import os
 import matplotlib.pyplot as plt
 
-# === Cargar datos ===
+# carga datos
 df = pd.read_excel("data/EXCELINCIDENCIAS.xlsx", sheet_name="Sheet1")
 
-# === Preprocesar fecha y causa ===
+#procesa fecha
 df["FECHA"] = df["INICIO INCIDENCIA"].dt.date
 
 data_grouped = df.groupby(["FECHA", "CAUSA"]).agg({
@@ -26,11 +26,11 @@ data_grouped.columns = ["fecha", "causa", "incidencias", "clientes", "tm_muerto"
 data_grouped["fecha"] = pd.to_datetime(data_grouped["fecha"])
 data_grouped["dia_semana"] = data_grouped["fecha"].dt.weekday
 
-# === Codificar causa ===
+# codifca causa
 ohe = OneHotEncoder(sparse_output=False)
 causa_encoded = ohe.fit_transform(data_grouped[["causa"]])
 
-# === Features y Targets ===
+# targets
 X = np.hstack([
     data_grouped[["dia_semana"]].values,
     causa_encoded
@@ -38,14 +38,14 @@ X = np.hstack([
 
 y = data_grouped[["incidencias", "clientes", "tm_muerto", "tm_resolucion"]].values
 
-# === Escalar salidas ===
+# escalar salidas
 scaler_y = StandardScaler()
 y_scaled = scaler_y.fit_transform(y)
 
-# === Split ===
+# dividir entrenamient
 X_train, X_test, y_train, y_test = train_test_split(X, y_scaled, test_size=0.2, random_state=42)
 
-# === Modelo MLP ===
+# MODELO
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(X.shape[1],)),
     tf.keras.layers.Dense(64, activation='relu'),
@@ -56,16 +56,16 @@ model = tf.keras.Sequential([
 model.compile(optimizer='adam', loss='mse')
 history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test))
 
-# === Guardar modelo y transformadores ===
+# guarda modelo
 os.makedirs("models", exist_ok=True)
 model.save("models/mlp_model.keras")
 joblib.dump(ohe, "models/encoder_causa.pkl")
 joblib.dump(scaler_y, "models/scaler_y.pkl")
 
-# === Crear carpeta outputs ===
+# genera carpeta ouputs
 os.makedirs("outputs", exist_ok=True)
 
-# === Graficar pérdida de entrenamiento y validación ===
+# perdida vs entrenamiento
 plt.figure(figsize=(10, 5))
 plt.plot(history.history['loss'], label='Entrenamiento Loss')
 plt.plot(history.history['val_loss'], label='Dataset Loss')
@@ -77,7 +77,7 @@ plt.grid()
 plt.savefig("outputs/loss_curve.png")
 plt.close()
 
-# === Comparación real vs predicho (en datos de test) ===
+# real vs prediccion
 y_pred_scaled = model.predict(X_test)
 y_pred = scaler_y.inverse_transform(y_pred_scaled)
 y_test_orig = scaler_y.inverse_transform(y_test)
@@ -100,7 +100,7 @@ for i in range(4):
     maes.append(mean_absolute_error(y_test_orig[:, i], y_pred[:, i]))
     r2s.append(r2_score(y_test_orig[:, i], y_pred[:, i]))
 
-# === Graficar métricas MAE y R² ===
+# mae y r2
 x_labels = labels
 
 plt.figure(figsize=(10, 5))
