@@ -55,4 +55,8 @@ cd scripts
 python predict.py
 ```
 Los resultados se mostrarán en consola.
+---
+Referencias:
+
+https://github.com/erikdao/mlp-timeseries
 
