@@ -9,23 +9,24 @@ model = tf.keras.models.load_model("models/mlp_model.keras")
 scaler_X = joblib.load("models/scaler_X.pkl")
 scaler_y = joblib.load("models/scaler_y.pkl")
 
-# Entrada: fecha futura
-fecha_str = "2025-04-02"  # Puedes cambiar la fecha
-fecha = pd.to_datetime(fecha_str)
+# Parametro
+fecha_str = "2025-04-02"
 
-# Simular valores aproximados de clientes y tiempos como entrada
+
+# Encoders
+hora_inicio = 10
 clientes_aprox = 500
 tm_muerto_aprox = 150
 tm_resolucion_aprox = 200
+minutos_respuesta = 90
 
-# Generar features temporales
-hora_inicio = 10  # asumimos una hora hipotética
+# Procesar fecha
+fecha = pd.to_datetime(fecha_str)
 mes = fecha.month
 dia_semana = fecha.weekday()
 semana_del_anio = fecha.isocalendar().week
-minutos_respuesta = 90  # valor estimado o promedio anterior
 
-# Construir entrada
+# Construir input
 X_input = np.array([[
     hora_inicio,
     mes,
@@ -37,13 +38,16 @@ X_input = np.array([[
     tm_resolucion_aprox
 ]])
 
-# Escalar y predecir
+# Escalar input
 X_scaled = scaler_X.transform(X_input)
+
+# Predecir
 y_pred_scaled = model.predict(X_scaled)
 y_pred = scaler_y.inverse_transform(y_pred_scaled)[0]
 
-# Imprimir resultados
-print(f"Predicción para {fecha_str}")
-print(f"- Clientes afectados:           {y_pred[0]:.2f}")
-print(f"- Tiempo promedio muerto (min): {y_pred[1]:.2f}")
-print(f"- Tiempo promedio resolución:   {y_pred[2]:.2f}")
+# Mostrar resultados
+print(f"Predicción MLP para {fecha_str}")
+print(f"- Número de incidencias:         {y_pred[0]:.2f}")
+print(f"- Clientes afectados:           {y_pred[1]:.2f}")
+print(f"- Tiempo promedio muerto (min): {y_pred[2]:.2f}")
+print(f"- Tiempo promedio resolución:   {y_pred[3]:.2f}")
